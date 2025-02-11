@@ -32,7 +32,6 @@ fn markdown_to_html(markdown: &str) -> String {
     let mut in_code_block = false;
     let mut in_table = false;
     let mut is_header = false;
-    let mut list_stack: Vec<&str> = Vec::new();
 
     let bold_regex = Regex::new(r"\*\*(.*?)\*\*").unwrap();
     let italic_regex = Regex::new(r"\*(.*?)\*").unwrap();
@@ -42,12 +41,10 @@ fn markdown_to_html(markdown: &str) -> String {
     let table_regex = Regex::new(r"^\s*\|.*\|$").unwrap();
     let table_separator_regex = Regex::new(r"^\s*\|[-\s]+\|$").unwrap();
     let header_regex = Regex::new(r"^(#{1,6})\s+(.*)").unwrap();
-    let unordered_list_regex = Regex::new(r"^\s*[-*]\s(.*)").unwrap();
-    let ordered_list_regex = Regex::new(r"^\s*\d+\.\s(.*)").unwrap();
 
     for line in markdown.lines() {
-        // Ignore unwanted scripts (Live Server, Debugging)
-        if line.contains("<![CDATA[") || line.contains("WebSocket") {
+        // **Ignore unwanted scripts or injected JavaScript**
+        if line.contains("<![CDATA[") || line.contains("WebSocket") || line.contains("Live Server") {
             continue;
         }
 
@@ -67,22 +64,6 @@ fn markdown_to_html(markdown: &str) -> String {
             }
         } else if in_code_block {
             format!("{}", line)
-        } else if unordered_list_regex.is_match(line) {
-            if list_stack.is_empty() || list_stack.last() != Some(&"ul") {
-                html.push_str("<ul>\n");
-                list_stack.push("ul");
-            }
-            let item = unordered_list_regex.captures(line).unwrap()[1].to_string();
-            format!("<li>{}</li>", item)
-        } else if ordered_list_regex.is_match(line) {
-            if list_stack.is_empty() || list_stack.last() != Some(&"ol") {
-                html.push_str("<ol>\n");
-                list_stack.push("ol");
-            }
-            let item = ordered_list_regex.captures(line).unwrap()[1].to_string();
-            format!("<li>{}</li>", item)
-        } else if line.trim() == "---" || line.trim() == "***" {
-            "<hr>".to_string()
         } else if table_regex.is_match(line) {
             if !in_table {
                 html.push_str("<table>\n");
@@ -107,15 +88,6 @@ fn markdown_to_html(markdown: &str) -> String {
             is_header = false;
             row_html
         } else {
-            while let Some(tag) = list_stack.pop() {
-                html.push_str(&format!("</{}>\n", tag));
-            }
-
-            if in_table {
-                html.push_str("</table>\n");
-                in_table = false;
-            }
-
             let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
             let line = italic_regex.replace_all(&line, "<em>$1</em>").to_string();
             let line = code_regex.replace_all(&line, "<code>$1</code>").to_string();
@@ -128,16 +100,13 @@ fn markdown_to_html(markdown: &str) -> String {
         html.push('\n');
     }
 
-    while let Some(tag) = list_stack.pop() {
-        html.push_str(&format!("</{}>\n", tag));
-    }
-
     if in_table {
         html.push_str("</table>\n");
     }
 
     html
 }
+
 
 // ✅ Improved Styling & JavaScript
 fn add_css_and_js(html: &str) -> String {
