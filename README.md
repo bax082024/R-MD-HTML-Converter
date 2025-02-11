@@ -13,3 +13,9 @@ A Markdown to HTML converter written in Rust. This command-line tool reads a Mar
 - Easy to use command line interface.
 
 --- 
+
+## Installation
+
+Prerequisites
+
+- Rust (Install via rustup.rs)
