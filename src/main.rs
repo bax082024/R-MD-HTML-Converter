@@ -31,8 +31,11 @@ fn main() {
 // 📝 Function to Convert Markdown to HTML
 fn markdown_to_html(markdown: &str) -> String {
     let mut html = String::new();
+    let mut in_list = false;
+
     let bold_regex = Regex::new(r"\*\*(.*?)\*\*").unwrap();
     let italic_regex = Regex::new(r"\*(.*?)\*").unwrap();
+    let code_regex = Regex::new(r"`(.*?)`").unwrap();
 
     for line in markdown.lines() {
         let converted_line = if line.starts_with("# ") {
@@ -41,14 +44,30 @@ fn markdown_to_html(markdown: &str) -> String {
             format!("<h2>{}</h2>", &line[3..])
         } else if line.starts_with("### ") {
             format!("<h3>{}</h3>", &line[4..])
+        } else if line.starts_with("- ") {
+            if !in_list {
+                html.push_str("<ul>\n");
+                in_list = true;
+            }
+            format!("<li>{}</li>", &line[2..])
         } else {
+            if in_list {
+                html.push_str("</ul>\n");
+                in_list = false;
+            }
             let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
-            italic_regex.replace_all(&line, "<em>$1</em>").to_string()
+            let line = italic_regex.replace_all(&line, "<em>$1</em>").to_string();
+            code_regex.replace_all(&line, "<code>$1</code>").to_string()
         };
 
         html.push_str(&converted_line);
         html.push('\n');
     }
 
+    if in_list {
+        html.push_str("</ul>\n");
+    }
+
     html
 }
+
