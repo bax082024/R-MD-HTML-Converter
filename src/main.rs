@@ -31,9 +31,10 @@ fn main() {
 // 📝 Function to Convert Markdown to HTML
 fn markdown_to_html(markdown: &str) -> String {
     let mut html = String::new();
+    
     let bold_regex = Regex::new(r"\*\*(.*?)\*\*").unwrap();
     let italic_regex = Regex::new(r"\*(.*?)\*").unwrap();
-    let code_regex = Regex::new(r"`(.*?)`").unwrap();
+    let code_regex = Regex::new(r"`(.*?)`").unwrap(); // New regex for inline code
 
     for line in markdown.lines() {
         let converted_line = if line.starts_with("# ") {
@@ -45,7 +46,7 @@ fn markdown_to_html(markdown: &str) -> String {
         } else {
             let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
             let line = italic_regex.replace_all(&line, "<em>$1</em>").to_string();
-            code_regex.replace_all(&line, "<code>$1</code>").to_string()
+            code_regex.replace_all(&line, "<code>$1</code>").to_string() // Convert inline code
         };
 
         html.push_str(&converted_line);
