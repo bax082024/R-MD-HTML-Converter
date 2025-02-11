@@ -36,8 +36,10 @@ A Markdown to HTML converter written in Rust. This command-line tool reads a Mar
 
 2. Write the code in the file `Test.md`.
 
-3. run the program and create the html file.
+3. run the program and create the `output.html` file.
     - **cargo run Test.md**
+
+4. Open the `output.html` file in any browser, or go live function in IDE.
 
 --- 
 
