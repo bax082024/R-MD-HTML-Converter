@@ -9,6 +9,15 @@ fn main() {
         return;
     }
 
-    
+    let filename = &args[1];
 
+    match fs::read_to_string(filename) {
+        Ok(contents) => {
+            println!("📄 Successfully read the file!");
+            println!("File Content:\n{}", contents);
+        }
+        Err(err) => {
+            eprintln!("❌ Error reading the file: {}", err);
+        }
+    }
 }
