@@ -1,7 +1,7 @@
-# Hello, Rust!
-This is a **bold** statement.
-And this is *italic* text.
-Here is some `inline code`.
+# Hello, There!
+Testing **bold** statement.
+Testing *italic* text.
+Testing `inline code`.
 
 # Shopping List
 - Apples
@@ -19,14 +19,14 @@ This is another note.
 
 | Name  | Age |
 |-------|---- |
-| Alice | 25  |
-| Bob   | 30  |
+| Tiril | 25  |
+| Jan   | 30  |
 
 # Code Example
 
 ```rust
 fn main() {
-    println!("Hello, Rust!");
+    println!("Hello, There!");
 }
 
 
