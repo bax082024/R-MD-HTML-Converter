@@ -43,3 +43,18 @@ A Markdown to HTML converter written in Rust. This command-line tool reads a Mar
 
 --- 
 
+## Supported Markdown Elements
+
+- Headers (# H1, ## H2, ### H3, etc.)
+- Bold (**bold**) & Italics (*italic*)
+- Inline Code (\code``)
+- Code Blocks (```rust ... ```)
+- Blockquotes (> Quote)
+- Lists (Ordered & Unordered)
+- Tables
+- Horizontal Rules (--- or ***)
+- Images (![Alt Text](url))
+- Links ([Text](URL))
+
+---
+
