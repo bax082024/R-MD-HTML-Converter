@@ -20,4 +20,25 @@ fn main() {
             eprintln!("Error reading the file: {}", err);
         }
     }
+
+    fn markdown_to_html(markdown: &str) -> String {
+        let mut html = String::new();
+    
+        for line in markdown.lines() {
+            let converted_line = if line.starts_with("# ") {
+                format!("<h1>{}</h1>", &line[2..])
+            } else if line.starts_with("## ") {
+                format!("<h2>{}</h2>", &line[3..])
+            } else if line.starts_with("### ") {
+                format!("<h3>{}</h3>", &line[4..])
+            } else {
+                line.to_string()
+            };
+    
+            html.push_str(&converted_line);
+            html.push('\n');
+        }
+    
+        html
+    }
 }
