@@ -30,11 +30,13 @@ fn main() {
 fn markdown_to_html(markdown: &str) -> String {
     let mut html = String::new();
     let mut in_list = false;
+    let mut in_ordered_list = false;
 
     let bold_regex = Regex::new(r"\*\*(.*?)\*\*").unwrap();
     let italic_regex = Regex::new(r"\*(.*?)\*").unwrap();
     let code_regex = Regex::new(r"`(.*?)`").unwrap();
     let link_regex = Regex::new(r"\[(.*?)\]\((.*?)\)").unwrap();
+    let ordered_list_regex = Regex::new(r"^\d+\.\s(.*)").unwrap();
 
     for line in markdown.lines() {
         let converted_line = if line.starts_with("# ") {
@@ -43,8 +45,14 @@ fn markdown_to_html(markdown: &str) -> String {
             format!("<h2>{}</h2>", &line[3..])
         } else if line.starts_with("### ") {
             format!("<h3>{}</h3>", &line[4..])
-        } else if line.starts_with("> ") { 
+        } else if line.starts_with("> ") {
             format!("<blockquote>{}</blockquote>", &line[2..])
+        } else if ordered_list_regex.is_match(line) {
+            if !in_ordered_list {
+                html.push_str("<ol>\n");
+                in_ordered_list = true;
+            }
+            format!("<li>{}</li>", &ordered_list_regex.captures(line).unwrap()[1])
         } else if line.starts_with("- ") {
             if !in_list {
                 html.push_str("<ul>\n");
@@ -55,6 +63,10 @@ fn markdown_to_html(markdown: &str) -> String {
             if in_list {
                 html.push_str("</ul>\n");
                 in_list = false;
+            }
+            if in_ordered_list {
+                html.push_str("</ol>\n");
+                in_ordered_list = false;
             }
             let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
             let line = italic_regex.replace_all(&line, "<em>$1</em>").to_string();
@@ -70,8 +82,12 @@ fn markdown_to_html(markdown: &str) -> String {
     if in_list {
         html.push_str("</ul>\n");
     }
+    if in_ordered_list {
+        html.push_str("</ol>\n");
+    }
 
     html
 }
+
 
 
