@@ -1,5 +1,6 @@
 use std::fs;
 use std::env;
+use regex::Regex;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -23,6 +24,8 @@ fn main() {
 
     fn markdown_to_html(markdown: &str) -> String {
         let mut html = String::new();
+        let bold_regex = Regex::new(r"\*\*(.*?)\*\*").unwrap();
+        let italic_regex = Regex::new(r"\*(.*?)\*").unwrap();
     
         for line in markdown.lines() {
             let converted_line = if line.starts_with("# ") {
@@ -32,7 +35,8 @@ fn main() {
             } else if line.starts_with("### ") {
                 format!("<h3>{}</h3>", &line[4..])
             } else {
-                line.to_string()
+                let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
+                italic_regex.replace_all(&line, "<em>$1</em>").to_string()
             };
     
             html.push_str(&converted_line);
