@@ -62,5 +62,15 @@ A Markdown to HTML converter written in Rust. This command-line tool reads a Mar
 
 ![Example](Images/example.png)
 
+---
+
+## Contact
+
+For feedback or questions, please contact :
+
+- **bax082024@gmail.com**
+
+---
+
 
 
