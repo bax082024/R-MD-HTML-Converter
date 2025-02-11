@@ -34,3 +34,11 @@ Check out [Google](https://www.google.com).
 1. Wake up
 2. Brush teeth
 3. Have breakfast
+
+# My Notes
+
+This is a note.
+
+---
+
+This is another note.

@@ -58,7 +58,9 @@ fn markdown_to_html(markdown: &str) -> String {
                 html.push_str("<ul>\n");
                 in_list = true;
             }
-            format!("<li>{}</li>", &line[2..])
+            format!("<li>{}</li>", &line[2..]) // ✅ Fix list handling
+        } else if line.trim() == "---" || line.trim() == "***" { // ✅ Fixed Horizontal Rule
+            "<hr>".to_string() // ✅ Correctly return <hr> instead of doing nothing
         } else {
             if in_list {
                 html.push_str("</ul>\n");
@@ -68,6 +70,7 @@ fn markdown_to_html(markdown: &str) -> String {
                 html.push_str("</ol>\n");
                 in_ordered_list = false;
             }
+            
             let line = bold_regex.replace_all(line, "<strong>$1</strong>").to_string();
             let line = italic_regex.replace_all(&line, "<em>$1</em>").to_string();
             let line = code_regex.replace_all(&line, "<code>$1</code>").to_string();
@@ -88,6 +91,7 @@ fn markdown_to_html(markdown: &str) -> String {
 
     html
 }
+
 
 
 
