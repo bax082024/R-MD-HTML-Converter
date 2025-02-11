@@ -2,29 +2,33 @@
 This is a **bold** statement.
 And this is *italic* text.
 Here is some `inline code`.
+
 # Shopping List
 - Apples
 - Bananas
 - Milk
 
-This is a paragraph.
+# My Notes
+This is a note.
 
-Another paragraph.
+---
 
-- A list item
-- Another list item
+This is another note.
+
+# People List
+
+| Name  | Age |
+|-------|---- |
+| Alice | 25  |
+| Bob   | 30  |
+
+# Code Example
+
+```rust
+fn main() {
+    println!("Hello, Rust!");
+}
 
 
-# Favorite Quote
 
-> This is a blockquote.
-
-Some normal text after the quote.
-
-
-# Useful Links
-
-Visit the [Rust website](https://www.rust-lang.org) for more information.
-
-Check out [Google](https://www.google.com).
 
