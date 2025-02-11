@@ -16,6 +16,17 @@ A Markdown to HTML converter written in Rust. This command-line tool reads a Mar
 
 ## Installation
 
-Prerequisites
+**Prerequisites**
 
-- Rust (Install via rustup.rs)
+- Rust (Install via **rustup.rs**)
+
+**Clone & Build**
+
+1. Clone repository :
+    - https://github.com/bax082024/R-MD-HTML-Converter.git
+
+2. **Build the Project**
+    - cargo build --release
+
+---
+
