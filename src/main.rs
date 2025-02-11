@@ -18,11 +18,11 @@ fn main() {
             let styled_output = add_css_and_js(&html_output);
 
             let output_filename = "output.html";
-            fs::write(output_filename, &styled_output).expect("❌ Unable to write file");
-            println!("✅ Converted HTML saved as {}", output_filename);
+            fs::write(output_filename, &styled_output).expect("Unable to write file");
+            println!("Converted HTML saved as {}", output_filename);
         }
         Err(err) => {
-            eprintln!("❌ Error reading the file: {}", err);
+            eprintln!("Error reading the file: {}", err);
         }
     }
 }
@@ -43,7 +43,6 @@ fn markdown_to_html(markdown: &str) -> String {
     let header_regex = Regex::new(r"^(#{1,6})\s+(.*)").unwrap();
 
     for line in markdown.lines() {
-        // **Ignore unwanted scripts or injected JavaScript**
         if line.contains("<![CDATA[") || line.contains("WebSocket") || line.contains("Live Server") {
             continue;
         }
@@ -108,7 +107,6 @@ fn markdown_to_html(markdown: &str) -> String {
 }
 
 
-// ✅ Improved Styling & JavaScript
 fn add_css_and_js(html: &str) -> String {
     format!(
         "<!DOCTYPE html>
