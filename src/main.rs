@@ -13,11 +13,11 @@ fn main() {
 
     match fs::read_to_string(filename) {
         Ok(contents) => {
-            println!("📄 Successfully read the file!");
-            println!("File Content:\n{}", contents);
+            let html_output = markdown_to_html(&contents);
+            println!("Converted HTML:\n{}", html_output);
         }
         Err(err) => {
-            eprintln!("❌ Error reading the file: {}", err);
+            eprintln!("Error reading the file: {}", err);
         }
     }
 }
